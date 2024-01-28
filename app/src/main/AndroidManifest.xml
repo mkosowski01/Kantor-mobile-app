@@ -14,19 +14,16 @@
             android:theme="@style/Theme.Kantor"
             tools:targetApi="31">
 
-        <!-- Start Activity -->
         <activity android:name="com.example.kantor.StartActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!-- Main Activity -->
-        <activity android:name="com.example.kantor.MainActivity">
-        </activity>
+        <activity android:name="com.example.kantor.MainActivity" />
         <activity android:name="com.example.kantor.LoginActivity" />
         <activity android:name="com.example.kantor.RegisterActivity"/>
-
+        <activity android:name="com.example.kantor.BalanceActivity" />
     </application>
 
 </manifest>

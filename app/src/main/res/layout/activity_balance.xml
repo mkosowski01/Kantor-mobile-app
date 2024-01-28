@@ -4,20 +4,20 @@
                 android:layout_height="match_parent"
                 android:background="@android:color/white">
 
-    <ImageView
-            android:id="@+id/logoImageView"
+    <TextView
+            android:id="@+id/balanceTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:src="@drawable/logo" />
+            android:text="Your Balance: $0"
+            android:layout_centerInParent="true" />
 
     <Button
-            android:id="@+id/btnMyBalance"
+            android:id="@+id/addFundsButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/logoImageView"
-            android:layout_marginTop="16dp"
-            android:text="My Balance"
-            android:layout_centerHorizontal="true" />
+            android:text="Add Funds"
+            android:layout_below="@id/balanceTextView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp" />
 
 </RelativeLayout>
