@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.kantor.DatabaseContract.UserEntry;
@@ -46,6 +47,7 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         } else {
+            Toast.makeText(LoginActivity.this, "Incorrect login or password", Toast.LENGTH_SHORT).show();
         }
     }
 
