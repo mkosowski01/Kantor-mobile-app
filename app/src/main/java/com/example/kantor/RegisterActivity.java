@@ -16,7 +16,6 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText etUsername;
     private EditText etPassword;
     private Button btnRegister;
-
     private DatabaseHelper dbHelper;
 
     @Override
@@ -24,16 +23,10 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        etUsername = findViewById(R.id.etUsername);
-        etPassword = findViewById(R.id.etPassword);
-        btnRegister = findViewById(R.id.btnRegister);
+        initializeViews();
+        setupActionBar();
 
         dbHelper = new DatabaseHelper(this);
-
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
 
         btnRegister.setOnClickListener(view -> {
             String username = etUsername.getText().toString();
@@ -42,9 +35,22 @@ public class RegisterActivity extends AppCompatActivity {
             if (!username.isEmpty() && !password.isEmpty()) {
                 addToDatabase(username, password);
             } else {
-                Toast.makeText(this, "Fields cannot be empty", Toast.LENGTH_SHORT).show();
+                showToast("Fields cannot be empty");
             }
         });
+    }
+
+    private void initializeViews() {
+        etUsername = findViewById(R.id.etUsername);
+        etPassword = findViewById(R.id.etPassword);
+        btnRegister = findViewById(R.id.btnRegister);
+    }
+
+    private void setupActionBar() {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     private void addToDatabase(String username, String password) {
@@ -59,14 +65,23 @@ public class RegisterActivity extends AppCompatActivity {
         db.close();
 
         if (newRowId != -1) {
-            Toast.makeText(this, "Account successfully created! You can sign in now", Toast.LENGTH_SHORT).show();
-            Intent loginIntent = new Intent(this, LoginActivity.class);
-            startActivity(loginIntent);
-            finish();
+            showToast("Account successfully created! You can sign in now");
+            navigateToLogin();
         } else {
-            Toast.makeText(this, "Error creating account. Please try again.", Toast.LENGTH_SHORT).show();
+            showToast("Error creating account. Please try again.");
         }
     }
+
+    private void navigateToLogin() {
+        Intent loginIntent = new Intent(this, LoginActivity.class);
+        startActivity(loginIntent);
+        finish();
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {

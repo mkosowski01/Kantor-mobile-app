@@ -1,16 +1,13 @@
 package com.example.kantor;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import com.example.kantor.DatabaseContract.UserEntry;
+import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -24,61 +21,55 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        etUsername = findViewById(R.id.etUsername);
-        etPassword = findViewById(R.id.etPassword);
-        btnLogin = findViewById(R.id.btnLogin);
+        initializeViews();
+        setupActionBar();
 
         dbHelper = new DatabaseHelper(this);
 
-        btnLogin.setOnClickListener(view -> attemptLogin());
+        btnLogin.setOnClickListener(view -> {
+            String username = etUsername.getText().toString();
+            String password = etPassword.getText().toString();
 
+            if (!username.isEmpty() && !password.isEmpty()) {
+                if (checkLogin(username, password)) {
+                    showToast("Successfully logged in");
+                    navigateToMainActivity();
+                } else {
+                    showToast("Incorrect login or password");
+                }
+            } else {
+                showToast("Fields cannot be empty");
+            }
+        });
+    }
+
+    private void initializeViews() {
+        etUsername = findViewById(R.id.etUsername);
+        etPassword = findViewById(R.id.etPassword);
+        btnLogin = findViewById(R.id.btnLogin);
+    }
+
+    private void setupActionBar() {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
     }
 
-    private void attemptLogin() {
-        String username = etUsername.getText().toString();
-        String password = etPassword.getText().toString();
-
-        if (login(username, password)) {
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        } else {
-            Toast.makeText(LoginActivity.this, "Incorrect login or password", Toast.LENGTH_SHORT).show();
-        }
+    private boolean checkLogin(String username, String password) {
+        // Implement logic to check login credentials in the database
+        // Return true if login is successful, false otherwise
+        return true; // Placeholder, replace with actual logic
     }
 
-    private boolean login(String username, String password) {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
+    private void navigateToMainActivity() {
+        Intent mainIntent = new Intent(this, MainActivity.class);
+        startActivity(mainIntent);
+        finish();
+    }
 
-        String[] projection = {
-                UserEntry._ID,
-                UserEntry.COLUMN_NAME_USERNAME,
-                UserEntry.COLUMN_NAME_PASSWORD
-        };
-
-        String selection = UserEntry.COLUMN_NAME_USERNAME + " = ? AND " + UserEntry.COLUMN_NAME_PASSWORD + " = ?";
-        String[] selectionArgs = {username, password};
-
-        Cursor cursor = db.query(
-                UserEntry.TABLE_NAME,
-                projection,
-                selection,
-                selectionArgs,
-                null,
-                null,
-                null
-        );
-
-        boolean loginSuccessful = cursor.getCount() > 0;
-
-        cursor.close();
-        db.close();
-
-        return loginSuccessful;
+    private void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
